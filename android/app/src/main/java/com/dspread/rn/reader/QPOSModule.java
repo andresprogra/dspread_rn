@@ -66,6 +66,7 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     private static final String TRADE_REQUEST_CONFIRM = "confirm";
     private static final String TRADE_REQUEST_ONLINE = "online";
     private static final String TRADE_REQUEST_DISPLAY = "display";
+    private static final String TRADE_REQUEST_APP = "app";
     private static final String TRADE_REQUEST_SERVER_CONNECTED = "server";
     private static final String EVENT_PARAM_TRADE_DATA = "data";
     private static final String EVENT_PARAM_TRADE_MESSAGE = "message";
@@ -100,6 +101,10 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     @ReactMethod
     public void open(@NonNull String mode) {
         if (pos != null) {
+            if (mode.equals(this.mode.name())) {
+                return;
+            }
+            close();
             pos.release();
             pos = null;
         }
@@ -217,6 +222,10 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
 
     @ReactMethod
     public void getQposInfo(int timeout, Promise promise) {
+        if (pos == null) {
+            promise.reject(new RuntimeException("QPOS is not connected"));
+            return;
+        }
         try {
             final Hashtable<String, Object> qposId = pos.syncGetQposId(timeout);
             final Hashtable<String, Object> qpos = pos.syncGetQposInfo(timeout);
@@ -273,11 +282,33 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     }
 
     @ReactMethod
+    public void setServerConnected(@Nullable String pin) {
+        if (pos == null) {
+            return;
+        }
+        if (pin == null) {
+            pos.cancelPin();
+        } else if (pin.equals("")) {
+            pos.bypassPin();
+        } else {
+            pos.sendPin(pin);
+        }
+    }
+
+    @ReactMethod
     public void setServerConnected(boolean connected) {
         if (pos == null) {
             return;
         }
         pos.isServerConnected(connected);
+    }
+
+    @ReactMethod
+    public void finalConfirm(boolean isConfirmed) {
+        if (pos == null) {
+            return;
+        }
+        pos.finalConfirm(isConfirmed);
     }
 
     @ReactMethod
@@ -385,7 +416,7 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
         final WritableMap data = new WritableNativeMap();
         data.putArray(EVENT_PARAM_TRADE_APPS, apps);
         final WritableMap params = new WritableNativeMap();
-        params.putString(EVENT_PARAM_TRADE_REQUEST, TRADE_REQUEST_DISPLAY);
+        params.putString(EVENT_PARAM_TRADE_REQUEST, TRADE_REQUEST_APP);
         params.putMap(EVENT_PARAM_TRADE_DATA, data);
         sendEvent(EVENT_TRADE, params);
     }

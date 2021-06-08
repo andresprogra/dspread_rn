@@ -1,6 +1,6 @@
 import {useEffect, useState, useCallback} from 'react';
-import useLocationChecker from './permissions/useLocationChecker';
-import useBluetoothChecker from './permissions/useBluetoothChecker';
+import useLocationChecker from './utils/useLocationChecker';
+import useBluetoothChecker from './utils/useBluetoothChecker';
 
 import QPOS, {QPOSEmitter} from '../QPOS';
 import {Mode, Events} from '../types';
@@ -9,6 +9,7 @@ function useQPOS() {
   const {locationEnabled} = useLocationChecker();
   const {bluetoothEnabled} = useBluetoothChecker();
   const [connected, setConnected] = useState<Boolean>(false);
+  const [connecting, setConnecting] = useState<Boolean>(false);
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ function useQPOS() {
       Events.CONNECTION,
       event => {
         console.log(Events.CONNECTION, event);
+        setConnecting(false);
         setConnected(event.connected);
       },
     );
@@ -46,12 +48,13 @@ function useQPOS() {
       if (connected) {
         return;
       }
+      setConnecting(true);
       QPOS.connect(address);
     },
     [connected],
   );
 
-  return {connected, error, connect};
+  return {connected, connecting, error, connect};
 }
 
 export default useQPOS;

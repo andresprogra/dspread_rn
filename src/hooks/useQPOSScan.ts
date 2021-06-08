@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import useLocationChecker from './permissions/useLocationChecker';
-import useBluetoothChecker from './permissions/useBluetoothChecker';
+import useLocationChecker from './utils/useLocationChecker';
+import useBluetoothChecker from './utils/useBluetoothChecker';
 
 import QPOS, {QPOSEmitter} from '../QPOS';
 import {Mode, Events, QPOSScanDevice, SCAN_BLE_TIMEOUT} from '../types';

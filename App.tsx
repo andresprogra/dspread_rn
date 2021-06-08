@@ -31,17 +31,32 @@ const deviceKeyExtractor = (device: QPOSScanDevice) => device.address;
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const {error, connected, connect} = useQPOS();
+  const {error, connected, connecting, connect} = useQPOS();
   const {scanning, devices, scan} = useQPOSScan();
-  const {transactionInProgress, doTrade, cancelTrade} = useQPOSTrade();
+  const {processing, messages, doTrade, cancelTrade} = useQPOSTrade();
 
-  console.log('state', {
-    error,
-    devices,
-    connected,
-    scanning,
-    transactionInProgress,
-  });
+  console.log(
+    'state',
+    JSON.stringify(
+      {
+        error,
+        qpos: {
+          connecting,
+          connected,
+        },
+        scan: {
+          devices,
+          scanning,
+        },
+        trade: {
+          processing,
+          messages,
+        },
+      },
+      null,
+      2,
+    ),
+  );
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -67,6 +82,9 @@ const App = () => {
         ) : (
           <Button title="Payment" onPress={onPaymentPress} />
         )} */}
+        <ScrollView>
+          <Text>{messages.join('\n')}</Text>
+        </ScrollView>
       </View>
     );
   };

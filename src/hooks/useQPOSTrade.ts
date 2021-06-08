@@ -1,22 +1,79 @@
 import {useEffect, useState, useCallback} from 'react';
-
+import useNetwork from './utils/useNetwork';
 import QPOS, {QPOSEmitter} from '../QPOS';
-import {Currency, Events, TransactionType} from '../types';
+import {Currency, Events, TransactionType, Request} from '../types';
 
 function useQPOS() {
-  const [transactionInProgress, setTransactionInProgress] =
-    useState<boolean>(false);
+  const {connectionInfo} = useNetwork();
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [messages, setMessages] = useState<string[]>([]);
+
+  const log = useCallback(
+    message => {
+      setMessages([message, ...messages]);
+    },
+    [messages, setMessages],
+  );
+
+  const processRequest = useCallback(
+    event => {
+      if (!event.request) {
+        return;
+      }
+      switch (event.request) {
+        case Request.APP: {
+          //TODO: select an app
+          log('Select an app');
+          QPOS.selectEmvApp(0);
+          break;
+        }
+        case Request.DISPLAY: {
+          log(event.data.message);
+          break;
+        }
+        case Request.CARD: {
+          log('Waiting for a card');
+          break;
+        }
+        case Request.CONFIRM: {
+          log('Final confirm');
+          //TODO: make a final confirm logic here
+          QPOS.finalConfirm(true);
+          break;
+        }
+        case Request.ONLINE: {
+          log('Processing online');
+          //TODO: make a backend call here
+          break;
+        }
+        case Request.SERVER_CONNECTED: {
+          //TODO: check server is connected
+          QPOS.setServerConnected(connectionInfo?.isConnected ?? false);
+          break;
+        }
+      }
+    },
+    [log, connectionInfo],
+  );
 
   useEffect(() => {
     const tradeListener = QPOSEmitter.addListener(Events.TRADE, event => {
       console.log('event', event);
-      // setConnected(event.connected);
+      if (event.request) {
+        processRequest(event);
+      }
+      if (event.transaction) {
+        setProcessing(false);
+      }
+      if (event.result) {
+        // setProcessing(false);
+      }
     });
 
     return () => {
       tradeListener?.remove();
     };
-  }, []);
+  }, [processRequest]);
 
   const doTrade = async ({
     amount,
@@ -31,25 +88,15 @@ function useQPOS() {
     type?: TransactionType;
     timeout?: number;
   }) => {
-    setTransactionInProgress(true);
+    setProcessing(true);
     QPOS.doTrade(amount, cashbackAmount, currencyCode, type, timeout);
-    // console.log('doTrade result', result);
-    // doTrade result {"DoTradeResult": "ICC", "code": "true", "result": "false"}
-    /*
-{
-  "DoTradeResult": "MCR",
-  "code": "true",
-  "content": "{newPin=, encTrack3=, pinRandomNumber=, encTrack2=9CDB68735ED94ED6E0E51A9C5786D68F03765CF0A39F8D72, pinKsn=09221022001050E00001, encTrack1=19E50C93ABBDF978884B90E270AA8B1DD9127CB101613B7FC0D6C1C8AB5E52BCFE561A02D852F0CB73F6954D95DB52C1A61D4DCA358962B8CFC0D10DF92E2ED4, track3Length=0, pinBlock=9EED78FC2428D9FC, serviceCode=201, maskedPAN=521567XXXXXX2525, cardholderName=STEPAN/RUDENKO, formatID=30, psamNo=, partialTrack=, encPAN=, encTracks=9CDB68735ED94ED6E0E51A9C5786D68F03765CF0A39F8D72, trackRandomNumber=, track2Length=37, track1Length=53, trackksn=09221022001050E00001, expiryDate=2211}",
-  "result": "true"
-}
-*/
   };
 
   const cancelTrade = () => {
     QPOS.cancelTrade(true);
   };
 
-  return {transactionInProgress, doTrade, cancelTrade};
+  return {messages, processing, doTrade, cancelTrade};
 }
 
 export default useQPOS;

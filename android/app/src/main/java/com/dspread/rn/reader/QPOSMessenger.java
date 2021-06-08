@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 
 import com.dspread.rn.reader.utils.DUKPK2009_CBC;
 import com.dspread.rn.reader.utils.QPOSUtil;
-import com.dspread.rn.reader.utils.TRACE;
 import com.dspread.xpos.CQPOSService;
 import com.dspread.xpos.QPOSService;
 
@@ -214,7 +213,7 @@ class QPOSMessenger extends CQPOSService {
             if (nfcLog == null) {
                 Hashtable<String, String> h = pos.getNFCBatchData();
                 String tlv = h.get("tlv");
-                Log.d(TAG, "nfc batchdata1: " + tlv);
+                Log.d(TAG, "nfc batchdata1 tlv: " + tlv);
             }
         } else if ((result == DoTradeResult.NFC_DECLINED)) {
         } else if (result == DoTradeResult.NO_RESPONSE) {
@@ -264,7 +263,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onQposIdResult(Hashtable<String, String> posIdTable) {
-        TRACE.w("onQposIdResult():" + posIdTable.toString());
+        Log.w(TAG, "onQposIdResult():" + posIdTable.toString());
         String posId = posIdTable.get("posId") == null ? "" : posIdTable.get("posId");
         String csn = posIdTable.get("csn") == null ? "" : posIdTable.get("csn");
         String psamId = posIdTable.get("psamId") == null ? "" : posIdTable

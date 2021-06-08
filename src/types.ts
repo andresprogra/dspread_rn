@@ -71,6 +71,46 @@ export enum TransactionResult {
   MULTIPLE_CARDS = 'MULTIPLE_CARDS',
 }
 
+export enum Request {
+  APP = 'app',
+  CARD = 'card',
+  DISPLAY = 'display',
+  CONFIRM = 'confirm',
+  ONLINE = 'online',
+  SERVER_CONNECTED = 'server',
+}
+
+export enum TradeResult {
+  NONE = 'NONE', // no-op
+  ICC = 'ICC', // no-op
+  NOT_ICC = 'NOT_ICC', // no-op
+  BAD_SWIPE = 'BAD_SWIPE', // no-op
+  CARD_NOT_SUPPORT = 'CARD_NOT_SUPPORT', // no-op
+  PLS_SEE_PHONE = 'PLS_SEE_PHONE', // no-op
+  MCR = 'MCR', // magnetic card
+  NFC_ONLINE = 'NFC_ONLINE',
+  NFC_OFFLINE = 'NFC_OFFLINE',
+  NFC_DECLINED = 'NFC_DECLINED', // no-op
+  NO_RESPONSE = 'NO_RESPONSE', // no-op
+}
+
+export enum Error {
+  CMD_NOT_AVAILABLE = 'CMD_NOT_AVAILABLE',
+  TIMEOUT = 'TIMEOUT',
+  DEVICE_RESET = 'DEVICE_RESET',
+  UNKNOWN = 'UNKNOWN',
+  DEVICE_BUSY = 'DEVICE_BUSY',
+  INPUT_OUT_OF_RANGE = 'INPUT_OUT_OF_RANGE',
+  INPUT_INVALID_FORMAT = 'INPUT_INVALID_FORMAT',
+  INPUT_ZERO_VALUES = 'INPUT_ZERO_VALUES',
+  INPUT_INVALID = 'INPUT_INVALID',
+  CASHBACK_NOT_SUPPORTED = 'CASHBACK_NOT_SUPPORTED',
+  CRC_ERROR = 'CRC_ERROR',
+  COMM_ERROR = 'COMM_ERROR',
+  MAC_ERROR = 'MAC_ERROR',
+  CMD_TIMEOUT = 'CMD_TIMEOUT',
+}
+
 export type QPOSScanDevice = {
   name: string;
   address: string;
@@ -108,7 +148,11 @@ export interface QPOSDevice {
 
   sendOnlineProcessResult(tlv: string): void;
 
+  setPin(pin: string): void;
+
   selectEmvApp(position: number): void;
 
   setServerConnected(connected: boolean): void;
+
+  finalConfirm(isConfirmed: boolean): void;
 }

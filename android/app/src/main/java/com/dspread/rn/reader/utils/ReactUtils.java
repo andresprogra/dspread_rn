@@ -14,6 +14,9 @@ public class ReactUtils {
     }
 
     public static ReadableMap convert(Hashtable<String, ?> in) {
+        if (in == null) {
+            return new WritableNativeMap();
+        }
         final WritableMap result = new WritableNativeMap();
         for (String key : in.keySet()) {
             result.putString(key, in.get(key).toString());
