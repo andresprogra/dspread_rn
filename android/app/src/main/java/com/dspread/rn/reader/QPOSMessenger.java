@@ -95,7 +95,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onDoTradeResult(DoTradeResult result, Hashtable<String, String> decodeData) {
-        Log.d(TAG, "(DoTradeResult result, Hashtable<String, String> decodeData) " + result.toString() + TRACE.NEW_LINE + "decodeData:" + decodeData);
+        Log.d(TAG, "(DoTradeResult result, Hashtable<String, String> decodeData) " + result.toString() + "\n" + "decodeData:" + decodeData);
         listener.onTradeResult(result, decodeData);
 
         String cardNo = "";
@@ -375,7 +375,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onReturnApduResult(boolean arg0, String arg1, int arg2) {
-        Log.d(TAG, "onReturnApduResult(boolean arg0, String arg1, int arg2):" + arg0 + TRACE.NEW_LINE + arg1 + TRACE.NEW_LINE + arg2);
+        Log.d(TAG, "onReturnApduResult(boolean arg0, String arg1, int arg2):" + arg0 + "\n" + arg1 + "\n" + arg2);
     }
 
     @Override
@@ -385,7 +385,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onReturnPowerOnIccResult(boolean arg0, String arg1, String arg2, int arg3) {
-        Log.d(TAG, "onReturnPowerOnIccResult(boolean arg0, String arg1, String arg2, int arg3) :" + arg0 + TRACE.NEW_LINE + arg1 + TRACE.NEW_LINE + arg2 + TRACE.NEW_LINE + arg3);
+        Log.d(TAG, "onReturnPowerOnIccResult(boolean arg0, String arg1, String arg2, int arg3) :" + arg0 + "\n" + arg1 + "\n" + arg2 + "\n" + arg3);
         if (arg0) {
             pos.sendApdu("123456");
         }
@@ -429,7 +429,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onReturnCustomConfigResult(boolean isSuccess, String result) {
-        Log.d(TAG, "onReturnCustomConfigResult(boolean isSuccess, String result):" + isSuccess + TRACE.NEW_LINE + result);
+        Log.d(TAG, "onReturnCustomConfigResult(boolean isSuccess, String result):" + isSuccess + "\n" + result);
     }
 
     /**
@@ -512,7 +512,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onGetPosComm(int mod, String amount, String posid) {
-        Log.d(TAG, "onGetPosComm(int mod, String amount, String posid):" + mod + TRACE.NEW_LINE + amount + TRACE.NEW_LINE + posid);
+        Log.d(TAG, "onGetPosComm(int mod, String amount, String posid):" + mod + "\n" + amount + "\n" + posid);
     }
 
     @Override
@@ -522,7 +522,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onUpdateMasterKeyResult(boolean arg0, Hashtable<String, String> arg1) {
-        Log.d(TAG, "onUpdateMasterKeyResult(boolean arg0, Hashtable<String, String> arg1):" + arg0 + TRACE.NEW_LINE + arg1.toString());
+        Log.d(TAG, "onUpdateMasterKeyResult(boolean arg0, Hashtable<String, String> arg1):" + arg0 + "\n" + arg1.toString());
     }
 
     @Override
@@ -532,17 +532,17 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onSetParamsResult(boolean arg0, Hashtable<String, Object> arg1) {
-        Log.d(TAG, "onSetParamsResult(boolean arg0, Hashtable<String, Object> arg1):" + arg0 + TRACE.NEW_LINE + arg1.toString());
+        Log.d(TAG, "onSetParamsResult(boolean arg0, Hashtable<String, Object> arg1):" + arg0 + "\n" + arg1.toString());
     }
 
     @Override
     public void onGetInputAmountResult(boolean arg0, String arg1) {
-        Log.d(TAG, "onGetInputAmountResult(boolean arg0, String arg1):" + arg0 + TRACE.NEW_LINE + arg1.toString());
+        Log.d(TAG, "onGetInputAmountResult(boolean arg0, String arg1):" + arg0 + "\n" + arg1.toString());
     }
 
     @Override
     public void onReturnNFCApduResult(boolean arg0, String arg1, int arg2) {
-        Log.d(TAG, "onReturnNFCApduResult(boolean arg0, String arg1, int arg2):" + arg0 + TRACE.NEW_LINE + arg1 + TRACE.NEW_LINE + arg2);
+        Log.d(TAG, "onReturnNFCApduResult(boolean arg0, String arg1, int arg2):" + arg0 + "\n" + arg1 + "\n" + arg2);
     }
 
     @Override
@@ -552,7 +552,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onReturnPowerOnNFCResult(boolean arg0, String arg1, String arg2, int arg3) {
-        Log.d(TAG, "onReturnPowerOnNFCResult(boolean arg0, String arg1, String arg2, int arg3):" + arg0 + TRACE.NEW_LINE + arg1 + TRACE.NEW_LINE + arg2 + TRACE.NEW_LINE + arg3);
+        Log.d(TAG, "onReturnPowerOnNFCResult(boolean arg0, String arg1, String arg2, int arg3):" + arg0 + "\n" + arg1 + "\n" + arg2 + "\n" + arg3);
     }
 
     @Override
@@ -562,7 +562,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onReadBusinessCardResult(boolean arg0, String arg1) {
-        Log.d(TAG, " onReadBusinessCardResult(boolean arg0, String arg1):" + arg0 + TRACE.NEW_LINE + arg1);
+        Log.d(TAG, " onReadBusinessCardResult(boolean arg0, String arg1):" + arg0 + "\n" + arg1);
     }
 
     @Override
@@ -732,7 +732,7 @@ class QPOSMessenger extends CQPOSService {
 
     @Override
     public void onQposDoGetTradeLog(String orderId, String log) {
-        Log.d(TAG, "onQposDoGetTradeLog(String orderId, String log):" + orderId + TRACE.NEW_LINE + log);
+        Log.d(TAG, "onQposDoGetTradeLog(String orderId, String log):" + orderId + "\n" + log);
         log = QPOSUtil.convertHexToString(log);
     }
 
