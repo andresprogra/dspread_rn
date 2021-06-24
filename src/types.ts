@@ -1,6 +1,3 @@
-export const SCAN_BLUETOOTH_TIMEOUT = 20;
-export const SCAN_BLE_TIMEOUT = 6;
-
 export enum Currency {
   USD = '840',
   MXN = '484',
@@ -141,7 +138,7 @@ export interface QPOSDevice {
     cashbackAmount: string,
     currencyCode: Currency,
     type: string,
-    timeout: number,
+    timeout: number
   ): void;
 
   cancelTrade(isUserCancel: boolean): void;
