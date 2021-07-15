@@ -3496,17 +3496,17 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-android-location-enabler@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-android-location-enabler/-/react-native-android-location-enabler-1.2.2.tgz#84b8dbbda0d5198d99cf264e6be4edaa7f256ba1"
+  integrity sha512-CC5ghRoK3jkGNK8jdIiYIc3l0XZuQuMt2KEfldDpnMCkNz2aAfUWyLCoOniFLqtdD9poA3az+kCmUzTvLAyTiA==
+
 react-native-bluetooth-classic@^1.60.0-rc.16:
   version "1.60.0-rc.16"
   resolved "https://registry.yarnpkg.com/react-native-bluetooth-classic/-/react-native-bluetooth-classic-1.60.0-rc.16.tgz#f924cb6f1e1d6888dfe908508fc00e83ce819d78"
   integrity sha512-YZ5gJDHj/0YM4Lv/Xptyl7Nq9vHkDfQJp5A3dihhQxKrLPM9iKzAkHpsYr3mK7zKBbkxVRS9wAY7GcdtDj7s2w==
   dependencies:
     buffer "^5.4.3"
-
-react-native-location-enabler@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-location-enabler/-/react-native-location-enabler-4.1.0.tgz#f4d809103c3f39e50b775d374ac544cbc6a0c429"
-  integrity sha512-SKjO+ks2B+1l2lbRCMtZ9QQ5BEIsIAHEztAWvWRyKZKVHHkes4vwD1nLazOvGjkAEnDnqbnr6LGan8OiwmX9Ow==
 
 react-native@0.63.4:
   version "0.63.4"

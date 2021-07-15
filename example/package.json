@@ -13,7 +13,7 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-bluetooth-classic": "^1.60.0-rc.16",
-    "react-native-location-enabler": "^4.1.0"
+    "react-native-android-location-enabler": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

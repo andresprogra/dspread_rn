@@ -78,7 +78,7 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     private QPOSService pos;
     private QPOSService.CommunicationMode mode = QPOSService.CommunicationMode.BLUETOOTH;
 
-    private final List<ReadableMap> devices = new ArrayList<>();
+    private final List<BluetoothDevice> devices = new ArrayList<>();
 
     QPOSModule(@NonNull ReactApplicationContext context) {
         super(context);
@@ -282,7 +282,7 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     }
 
     @ReactMethod
-    public void setServerConnected(@Nullable String pin) {
+    public void setPin(@Nullable String pin) {
         if (pos == null) {
             return;
         }
@@ -348,28 +348,13 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
 
     @Override
     public void onDeviceFound(@NonNull BluetoothDevice device) {
-        final boolean bonded = device.getBondState() == BluetoothDevice.BOND_BONDED;
-        final String address = device.getAddress();
-        final String name = device.getName();
-
-        final WritableMap data = new WritableNativeMap();
-        data.putString(EVENT_PARAM_DEVICE_ADDRESS, address);
-        data.putString(EVENT_PARAM_DEVICE_NAME, name);
-        data.putBoolean(EVENT_PARAM_DEVICE_BONDED, bonded);
-        devices.add(data);
+        devices.add(device);
+        sendDevices(true);
     }
 
     @Override
     public void onDeviceScanFinished() {
-        final WritableArray result = new WritableNativeArray();
-        for (ReadableMap device: devices) {
-            result.pushMap(device);
-        }
-
-        final WritableMap params = new WritableNativeMap();
-        params.putArray(EVENT_PARAM_DEVICES, result);
-        params.putBoolean(EVENT_PARAM_SCANNING, false);
-        sendEvent(EVENT_DEVICES, params);
+        sendDevices(false);
     }
 
     @Override
@@ -479,6 +464,26 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
         params.putString(EVENT_PARAM_TRADE_RESULT, result.name());
         params.putMap(EVENT_PARAM_TRADE_DATA, data);
         sendEvent(EVENT_TRADE, params);
+    }
+
+    private void sendDevices(boolean scanning) {
+      final WritableArray result = new WritableNativeArray();
+      for (BluetoothDevice device: devices) {
+        final boolean bonded = device.getBondState() == BluetoothDevice.BOND_BONDED;
+        final String address = device.getAddress();
+        final String name = device.getName();
+
+        final WritableMap data = new WritableNativeMap();
+        data.putString(EVENT_PARAM_DEVICE_ADDRESS, address);
+        data.putString(EVENT_PARAM_DEVICE_NAME, name);
+        data.putBoolean(EVENT_PARAM_DEVICE_BONDED, bonded);
+        result.pushMap(data);
+      }
+
+      final WritableMap params = new WritableNativeMap();
+      params.putArray(EVENT_PARAM_DEVICES, result);
+      params.putBoolean(EVENT_PARAM_SCANNING, scanning);
+      sendEvent(EVENT_DEVICES, params);
     }
 
     private void sendEvent(@NonNull String eventName,

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Permission, PermissionsAndroid } from 'react-native';
+import { Platform, Permission, PermissionsAndroid } from 'react-native';
 
 type Result = {
   permissionsGranted: Boolean;
@@ -7,9 +7,15 @@ type Result = {
 };
 
 function usePermission(permission: Permission): Result {
-  const [permissionsGranted, setPermissionsGranted] = useState(false);
+  const [permissionsGranted, setPermissionsGranted] = useState(
+    Platform.OS === 'ios'
+  );
 
   const checkPermissions = useCallback(async () => {
+    if (permissionsGranted) {
+      return;
+    }
+
     try {
       const checkGranted = await PermissionsAndroid.check(permission);
       // console.log(`${permission} permission checked: ${checkGranted}`);
@@ -26,7 +32,7 @@ function usePermission(permission: Permission): Result {
       setPermissionsGranted(false);
       console.warn(`Fail to request ${permission} permission`, e);
     }
-  }, [permission]);
+  }, [permission, permissionsGranted]);
 
   useEffect(() => {
     checkPermissions();

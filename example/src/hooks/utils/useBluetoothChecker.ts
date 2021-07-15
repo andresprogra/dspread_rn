@@ -22,7 +22,7 @@ function useBluetoothChecker(autoEnable = true) {
   const enable = async () => await RNBluetoothClassic.requestBluetoothEnabled();
 
   useEffect(() => {
-    if (bluetoothEnabled == false && autoEnable) {
+    if (bluetoothEnabled === false && autoEnable) {
       enable();
     }
   }, [bluetoothEnabled, autoEnable]);

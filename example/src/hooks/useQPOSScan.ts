@@ -21,7 +21,7 @@ function useQPOSScan() {
       Events.DEVICES,
       (event: any) => {
         setDevices(event.devices);
-        setScanning(event.scanning);
+        setScanning(!!event.scanning);
       }
     );
 

@@ -368,7 +368,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-bluetooth-classic: cfffa03166bb661f328b4d27c2252550b54b1982
-  react-native-dspread: f0bb22c02c524cd7bd6303fba87099678b1bf324
+  react-native-dspread: 67876f090d0442bcea1a672bb22e4981eeaa2b94
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -382,6 +382,6 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: f8388b0ee3d740d2362cb77a7de9ed774226908a
+PODFILE CHECKSUM: 3b19449cfa625f55219ff5692c0e589766452be1
 
 COCOAPODS: 1.10.1

@@ -33,7 +33,7 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const { error, connected, connecting, connect } = useQPOS();
   const { scanning, devices, scan } = useQPOSScan();
-  const { processing, messages, doTrade, cancelTrade } = useQPOSTrade();
+  const { processing, messages, doTrade } = useQPOSTrade();
 
   console.log(
     'state',
@@ -67,9 +67,6 @@ const App = () => {
   };
   const onPaymentPress = () => {
     doTrade({ amount: '50' });
-  };
-  const onPaymentCancelPress = () => {
-    cancelTrade();
   };
 
   const renderConnectedDevice = () => {

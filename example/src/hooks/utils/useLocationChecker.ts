@@ -1,48 +1,38 @@
-import { useState, useEffect } from 'react';
-import { PermissionsAndroid } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import usePermission from './usePermission';
-import LocationEnabler from 'react-native-location-enabler';
 
-const {
-  PRIORITIES: { HIGH_ACCURACY },
-  addListener,
-  checkSettings,
-  requestResolutionSettings,
-} = LocationEnabler;
-
-const LOCATION_CONFIG = {
-  priority: HIGH_ACCURACY,
-  alwaysShow: true, // default false
-  needBle: true,
-};
-
-function useLocationChecker(autoEnable: boolean = true) {
+function useLocationChecker(autoEnable: boolean = Platform.OS === 'android') {
   const { permissionsGranted: locationPermissionsGranted } = usePermission(
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
   );
-  const [enabled, setEnabled] = useState<boolean>();
+  const [enabled, setEnabled] = useState<boolean>(Platform.OS === 'ios');
 
-  useEffect(() => {
+  const enable = useCallback(async () => {
     if (!locationPermissionsGranted) {
       return;
     }
 
-    const onStateChange = ({ locationEnabled }: { locationEnabled: boolean }) =>
-      setEnabled(locationEnabled);
-
-    const listener = addListener(onStateChange);
-    checkSettings(LOCATION_CONFIG);
-    return () => listener.remove();
+    try {
+      const result =
+        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+          interval: 10000,
+          fastInterval: 5000,
+        });
+      if (result === 'enabled' || result === 'already-enabled') {
+        setEnabled(true);
+      } else {
+        setEnabled(false);
+      }
+    } catch (e) {}
   }, [locationPermissionsGranted]);
 
-  const enable = async () => await requestResolutionSettings(LOCATION_CONFIG);
-
   useEffect(() => {
-    if (enabled === false && autoEnable) {
-      console.log('location. enable');
+    if (!enabled && autoEnable) {
       enable();
     }
-  }, [enabled, autoEnable]);
+  }, [enabled, autoEnable, enable]);
 
   return { locationEnabled: enabled, enable };
 }

@@ -211,40 +211,40 @@ RCT_EXPORT_METHOD(cancelTrade:(BOOL)isUserCancel) {
       data[@"message"] = @"TRY_ANOTHER_INTERFACE";
       break;
     case Display_PLEASE_WAIT:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"PLEASE_WAIT";
       break;
     case Display_REMOVE_CARD:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"REMOVE_CARD";
       break;
     case Display_CLEAR_DISPLAY_MSG:
       data[@"message"] = @"CLEAR_DISPLAY_MSG";
       break;
     case Display_PROCESSING:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"PROCESSING";
       break;
     case Display_TRANSACTION_TERMINATED:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"TRANSACTION_TERMINATED";
       break;
     case Display_PIN_OK:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"PIN_OK";
       break;
     case Display_INPUT_PIN_ING:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"INPUT_PIN_ING";
       break;
     case Display_MAG_TO_ICC_TRADE:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"MAG_TO_ICC_TRADE";
       break;
     case Display_INPUT_OFFLINE_PIN_ONLY:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"INPUT_OFFLINE_PIN_ONLY";
       break;
     case Display_INPUT_LAST_OFFLINE_PIN:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"INPUT_LAST_OFFLINE_PIN";
       break;
     case Display_CARD_REMOVED:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"CARD_REMOVED";
       break;
     case Display_MSR_DATA_READY:
-      data[@"message"] = @"TRY_ANOTHER_INTERFACE";
+      data[@"message"] = @"MSR_DATA_READY";
       break;
     default:
       break;
