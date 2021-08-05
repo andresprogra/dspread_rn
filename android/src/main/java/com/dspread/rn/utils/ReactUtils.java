@@ -13,6 +13,18 @@ public class ReactUtils {
     private ReactUtils() {
     }
 
+    public static WritableMap write(Hashtable<String, ?> in, WritableMap result) {
+        for (String key : in.keySet()) {
+            final Object value = in.get(key);
+            if (value instanceof Hashtable) {
+                write((Hashtable) value, result);
+            } else {
+                result.putString(key, in.get(key).toString());
+            }
+        }
+        return result;
+    }
+
     public static ReadableMap convert(Hashtable<String, ?> in) {
         if (in == null) {
             return new WritableNativeMap();

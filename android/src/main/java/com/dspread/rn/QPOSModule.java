@@ -47,7 +47,6 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
 
     private static final String EVENT_CONNECTION = "connection";
     private static final String EVENT_PARAM_CONNECTED = "connected";
-    private static final String EVENT_PARAM_DEVICE = "device";
 
     private static final String EVENT_DEVICES = "bluetooth_devices";
     private static final String EVENT_PARAM_DEVICES = "devices";
@@ -227,10 +226,10 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
             return;
         }
         try {
-            final Hashtable<String, Object> qposId = pos.syncGetQposId(timeout);
-            final Hashtable<String, Object> qpos = pos.syncGetQposInfo(timeout);
-            qpos.put("id", qposId);
-            final ReadableMap device = ReactUtils.convert(qpos);
+            final Hashtable<String, Object> qposId = pos.syncGetQposId(QPOS_INFO_TIMEOUT);
+            final Hashtable<String, Object> qpos = pos.syncGetQposInfo(QPOS_INFO_TIMEOUT);
+            final WritableMap device = ReactUtils.write(qpos, new WritableNativeMap());
+            ReactUtils.write(qposId, device);
             promise.resolve(device);
         } catch (Throwable tr) {
             promise.reject(tr);
@@ -359,14 +358,8 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
 
     @Override
     public void onQposConnected() {
-        final Hashtable<String, Object> qposId = pos.syncGetQposId(QPOS_INFO_TIMEOUT);
-        final Hashtable<String, Object> qpos = pos.syncGetQposInfo(QPOS_INFO_TIMEOUT);
-        qpos.put("id", qposId);
-        final ReadableMap device = ReactUtils.convert(qpos);
-
         final WritableMap params = new WritableNativeMap();
         params.putBoolean(EVENT_PARAM_CONNECTED, true);
-        params.putMap(EVENT_PARAM_DEVICE, device);
         sendEvent(EVENT_CONNECTION, params);
     }
 

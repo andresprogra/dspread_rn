@@ -10,10 +10,14 @@
 
 @implementation QPOS {
   BTDeviceFinder *bt;
-  NSMutableArray* devices;
-  
+  NSMutableArray *devices;
+
   QPOSService *pos;
   PosType     mode;
+
+  __block NSDictionary *posId;
+  __block NSDictionary *posInfo;
+  dispatch_semaphore_t posInfoSemaphore;
 }
 
 RCT_EXPORT_MODULE(QPOS);
@@ -78,11 +82,21 @@ RCT_EXPORT_METHOD(getQposInfo:(nonnull NSNumber *)timeout
     return;
   }
 
-//  const NSDictionary* qposId = [pos sync:timeout];
-//  const NSDictionary* qpos = [pos getQPosInfo:timeout];
-//  qpos.put("id", qposId);
-//  final ReadableMap device = ReactUtils.convert(qpos);
-//  resolve(@[@(eventId)]);
+  posInfoSemaphore = dispatch_semaphore_create(0);
+  [pos getQPosId];
+  dispatch_semaphore_wait(posInfoSemaphore, DISPATCH_TIME_FOREVER);
+
+  posInfoSemaphore = dispatch_semaphore_create(0);
+  [pos getQPosInfo];
+  dispatch_semaphore_wait(posInfoSemaphore, DISPATCH_TIME_FOREVER);
+
+  if (nil == posInfo || nil == posId) {
+      reject(@"QPOS", @"QPOS pos info request failed", nil);
+  }
+    
+  const NSMutableDictionary * body = [posId mutableCopy];
+  [body addEntriesFromDictionary:posInfo];
+  resolve(body);
 }
 
 RCT_EXPORT_METHOD(doTrade:
@@ -386,12 +400,14 @@ RCT_EXPORT_METHOD(cancelTrade:(BOOL)isUserCancel) {
   [self sendEventWithName:@"trade" body:body];
 }
 
--(void)onQposIdResult: (NSDictionary*)posId {
-  //TODO: send qpos device id back
+-(void)onQposIdResult: (NSDictionary*)posIdData {
+  posId = posIdData;
+  dispatch_semaphore_signal(posInfoSemaphore);
 }
 
 -(void)onQposInfoResult: (NSDictionary*)posInfoData {
-  //TODO: send qpos device info back
+  posInfo = posInfoData;
+  dispatch_semaphore_signal(posInfoSemaphore);
 }
 
 -(void)onDHError: (DHError)errorState {

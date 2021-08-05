@@ -31,7 +31,7 @@ const deviceKeyExtractor = (device: QPOSScanDevice) => device.address;
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const { error, connected, connecting, connect } = useQPOS();
+  const { qpos, error, connected, connecting, connect } = useQPOS();
   const { scanning, devices, scan } = useQPOSScan();
   const { processing, messages, doTrade } = useQPOSTrade();
 
@@ -43,6 +43,7 @@ const App = () => {
         qpos: {
           connecting,
           connected,
+          ...qpos,
         },
         scan: {
           devices,

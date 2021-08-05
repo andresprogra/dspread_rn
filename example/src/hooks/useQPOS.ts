@@ -3,12 +3,14 @@ import useLocationChecker from './utils/useLocationChecker';
 import useBluetoothChecker from './utils/useBluetoothChecker';
 
 import QPOS, { QPOSEmitter, Events, Mode } from 'react-native-dspread';
+import type { QPOSInfo } from 'react-native-dspread';
 
 function useQPOS() {
   const { locationEnabled } = useLocationChecker();
   const { bluetoothEnabled } = useBluetoothChecker();
   const [connected, setConnected] = useState<Boolean>(false);
   const [connecting, setConnecting] = useState<Boolean>(false);
+  const [qpos, setQpos] = useState<QPOSInfo>();
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -44,6 +46,11 @@ function useQPOS() {
     };
   }, [locationEnabled, bluetoothEnabled]);
 
+  const getInfo = useCallback(async () => {
+    const info = await QPOS.getQposInfo(10);
+    setQpos(info);
+  }, []);
+
   const connect = useCallback(
     (address: string) => {
       if (connected) {
@@ -55,7 +62,13 @@ function useQPOS() {
     [connected]
   );
 
-  return { connected, connecting, error, connect };
+  useEffect(() => {
+    if (connected) {
+      getInfo();
+    }
+  }, [connected, getInfo]);
+
+  return { qpos, connected, connecting, error, connect, getInfo };
 }
 
 export default useQPOS;

@@ -114,6 +114,36 @@ export type QPOSScanDevice = {
   bonded: boolean;
 };
 
+export interface QPOSInfo {
+  PCIHardwareVersion?: string;
+  SUB?: string;
+  batteryLevel?: string;
+  batteryPercentage?: string;
+  bootloaderVersion?: string;
+  csn?: string;
+  deviceNumber?: string;
+  firmwareVersion?: string;
+  hardwareVersion?: string;
+  isCharging?: boolean;
+  isKeyboard?: boolean;
+  isSupportNFC?: string;
+  isSupportedTrack1?: boolean;
+  isSupportedTrack2?: boolean;
+  isSupportedTrack3?: boolean;
+  isUsbConnected?: boolean;
+  macAddress?: string;
+  merchantId?: string;
+  posId?: number;
+  psamId?: number;
+  psamNo?: string;
+  tmk0Status?: number;
+  tmk1Status?: number;
+  tmk2Status?: number;
+  tmk3Status?: number;
+  tmk4Status?: number;
+  updateWorkKeyFlag?: boolean;
+  vendorCode?: string;
+}
 export interface QPOSDevice {
   getConstants(): Map<String, any>;
 
@@ -131,7 +161,7 @@ export interface QPOSDevice {
 
   disconnect(): void;
 
-  getInfo(timeout: number): Promise<any>;
+  getQposInfo(timeout: number): Promise<any>;
 
   doTrade(
     amount: string,
