@@ -140,6 +140,11 @@ RCT_EXPORT_METHOD(cancelTrade:(BOOL)isUserCancel) {
   [pos cancelTrade:isUserCancel];
 }
 
+RCT_EXPORT_METHOD(getNFCBatchData:(RCTResponseSenderBlock)callback) {
+  const NSDictionary* data = [pos getNFCBatchData];
+  callback(@[data]);
+}
+
 -(void)onBluetoothName2Mode:(NSString *)bluetoothName {
 //  NSLog(@"=========== onBluetoothName2Mode %@", bluetoothName);
   if ([bluetoothName hasPrefix:@"MPOS"] || [bluetoothName hasPrefix:@"QPOS"]) {

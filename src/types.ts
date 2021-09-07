@@ -173,6 +173,8 @@ export interface QPOSDevice {
 
   cancelTrade(isUserCancel: boolean): void;
 
+  getNFCBatchData(callback: Function): void;
+
   sendOnlineProcessResult(tlv: string): void;
 
   setPin(pin: string): void;

@@ -322,6 +322,17 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
         }
     }
 
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public void getNFCBatchData(Callback callback) {
+    if (pos == null) {
+      return;
+    }
+
+    final Hashtable<String, String> data = pos.getNFCBatchData();
+    final WritableMap batchData = ReactUtils.write(data, new WritableNativeMap());
+    callback.invoke(batchData);
+  }
+
     @Override
     public void onError(@NonNull Error errorState) {
         final WritableMap params = new WritableNativeMap();

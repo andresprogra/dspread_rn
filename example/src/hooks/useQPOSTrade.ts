@@ -6,6 +6,7 @@ import QPOS, {
   TransactionType,
   Request,
   Currency,
+  TradeResult,
 } from 'react-native-dspread';
 
 function useQPOSTrade() {
@@ -73,6 +74,16 @@ function useQPOSTrade() {
           setProcessing(false);
         }
         if (event.result) {
+          switch (event.result) {
+            case TradeResult.NFC_ONLINE:
+              setTimeout(
+                () =>
+                  QPOS.getNFCBatchData((data: any) =>
+                    console.log('getNFCBatchData', data)
+                  ),
+                200
+              );
+          }
           // setProcessing(false);
         }
       }
