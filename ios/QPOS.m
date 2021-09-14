@@ -111,6 +111,7 @@ RCT_EXPORT_METHOD(doTrade:
 }
                 
 RCT_EXPORT_METHOD(sendOnlineProcessResult:(nonnull NSString *)tlv) {
+  NSLog(@"=========== sendOnlineProcessResult %@", tlv);
   [pos sendOnlineProcessResult:tlv];
 }
 
@@ -222,6 +223,9 @@ RCT_EXPORT_METHOD(getNFCBatchData:(RCTResponseSenderBlock)callback) {
   body[@"request"] = @"online";
   body[@"data"] = [pos anlysEmvIccData:tlv];
   [self sendEventWithName:@"trade" body:body];
+}
+-(void)onReturnReversalData: (NSString*) tlv {
+  NSLog(@"=========== onReturnReversalData %@", tlv);
 }
 -(void)onRequestDisplay: (Display)displayMsg {
   const NSMutableDictionary* data = [[NSMutableDictionary alloc] init];
