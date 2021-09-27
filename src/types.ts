@@ -171,6 +171,14 @@ export interface QPOSDevice {
     timeout: number
   ): void;
 
+  doCheckCard(
+    amount: string,
+    cashbackAmount: string,
+    currencyCode: Currency,
+    type: string,
+    timeout: number
+  ): void;
+
   cancelTrade(isUserCancel: boolean): void;
 
   getNFCBatchData(callback: Function): void;

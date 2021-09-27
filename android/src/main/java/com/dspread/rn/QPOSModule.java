@@ -253,6 +253,22 @@ public class QPOSModule extends ReactContextBaseJavaModule implements QPOSMessen
     }
 
     @ReactMethod
+    public void doCheckCard(@NonNull String amount,
+                        @NonNull String cashbackAmount,
+                        @NonNull String currencyCode,
+                        @NonNull String type,
+                        int timeout) {
+      if (pos == null) {
+        return;
+      }
+
+      final QPOSService.TransactionType transactionType =
+        QPOSService.TransactionType.valueOf(type);
+      pos.setAmount(amount, cashbackAmount, currencyCode, transactionType);
+      pos.doCheckCard(timeout);
+    }
+
+    @ReactMethod
     public void sendOnlineProcessResult(@Nullable String tlv) {
         if (pos == null) {
             return;
