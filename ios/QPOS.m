@@ -109,6 +109,17 @@ RCT_EXPORT_METHOD(doTrade:
   [pos setAmount:amount aAmountDescribe:cashbackAmount currency:currencyCode transactionType:TransactionType_GOODS];
   [pos doTrade:timeout.intValue];
 }
+
+RCT_EXPORT_METHOD(doCheckCard:
+                  (nonnull NSString *)amount
+                  cashbackAmount:(nonnull NSString *)cashbackAmount
+                  currencyCode:(nonnull NSString *)currencyCode
+                  type:(nonnull NSString *)type
+                  timeout:(nonnull NSNumber *)timeout) {
+  //TODO: add transaction type
+  [pos setAmount:amount aAmountDescribe:cashbackAmount currency:currencyCode transactionType:TransactionType_GOODS];
+  [pos doCheckCard:timeout.intValue];
+}
                 
 RCT_EXPORT_METHOD(sendOnlineProcessResult:(nonnull NSString *)tlv) {
   NSLog(@"=========== sendOnlineProcessResult %@", tlv);
