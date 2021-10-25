@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import useNetwork from './utils/useNetwork';
 import QPOS, {
   QPOSEmitter,
@@ -13,6 +13,11 @@ function useQPOSTrade() {
   const { connectionInfo } = useNetwork();
   const [processing, setProcessing] = useState<boolean>(false);
   const [messages, setMessages] = useState<string[]>([]);
+  const [processorResult, setProcessorResult] = useState('');
+
+  useEffect(() => {
+    if (processorResult) QPOS.sendOnlineProcessResult(processorResult);
+  }, [processorResult]);
 
   const log = useCallback(
     (message: string) => {
@@ -50,6 +55,8 @@ function useQPOSTrade() {
         case Request.ONLINE: {
           log('Processing online');
           //TODO: make a backend call here
+          // we got result from card processor service and now we have to write it to chip
+          setProcessorResult('8A023030');
           break;
         }
         case Request.SERVER_CONNECTED: {
@@ -108,7 +115,7 @@ function useQPOSTrade() {
     timeout?: number;
   }) => {
     setProcessing(true);
-    QPOS.doTrade(amount, cashbackAmount, currencyCode, type, timeout);
+    QPOS.doCheckCard(amount, cashbackAmount, currencyCode, type, timeout);
   };
 
   const cancelTrade = () => {
