@@ -157,6 +157,10 @@ RCT_EXPORT_METHOD(getNFCBatchData:(RCTResponseSenderBlock)callback) {
   callback(@[data]);
 }
 
+-(void)onRequestBatchData: (NSString*)tlv {
+  // TODO: is called by sendOnlineProcessResult for this processor_result: "8A023030"
+}
+
 -(void)onBluetoothName2Mode:(NSString *)bluetoothName {
 //  NSLog(@"=========== onBluetoothName2Mode %@", bluetoothName);
   if ([bluetoothName hasPrefix:@"MPOS"] || [bluetoothName hasPrefix:@"QPOS"]) {
